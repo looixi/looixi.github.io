@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illusera - AI Creative Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #8b5cf6;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --surface-light: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #1a1a3a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Professional Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 15, 35, 0.98);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--glass);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 24px;
+            margin: 2rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--glass);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 2rem auto;
+            width: calc(100% - 4rem);
+            background: var(--surface);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        .chat-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+            justify-content: center;
+        }
+
+        .action-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 400px;
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: var(--surface-light);
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .user .avatar {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .bot .avatar {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .user .message-content {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .bot .message-content {
+            background: var(--surface-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Search Results */
+        .search-results {
+            margin-top: 1.5rem;
+        }
+
+        .found-images {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .results-header {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        /* Images Grid */
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-item {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .image-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 15px 10px 10px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+        }
+
+        .add-to-moodboard {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-moodboard:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Moodboard Sidebar */
+        .moodboard-sidebar {
+            position: fixed;
+            top: 80px;
+            right: -400px;
+            width: 400px;
+            height: calc(100vh - 80px);
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            transition: right 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .moodboard-sidebar.open {
+            right: 0;
+        }
+
+        .moodboard-header {
+            padding: 1.5rem;
+            background: var(--surface-light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .moodboard-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .close-moodboard {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .close-moodboard:hover {
+            color: var(--text-primary);
+            background: var(--glass);
+        }
+
+        .moodboard-content {
+            padding: 1rem;
+        }
+
+        .moodboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .moodboard-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .moodboard-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-from-moodboard {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .moodboard-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .moodboard-toggle {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .moodboard-toggle:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .input-container {
+            padding: 2rem;
+            background: var(--surface-light);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            outline: none;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            resize: none;
+            min-height: 56px;
+            max-height: 120px;
+        }
+
+        .input-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-box::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .send-button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .welcome {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            padding: 20px;
+        }
+
+        .modal-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        /* Notification Styles */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .hero-section {
+                margin: 1rem;
+                padding: 2rem 1rem;
+            }
+
+            .chat-container {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+                border-radius: 16px;
+            }
+
+            .messages {
+                padding: 1rem;
+            }
+
+            .images-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 1rem;
+            }
+
+            .input-container {
+                padding: 1rem;
+            }
+
+            .moodboard-sidebar {
+                width: 100vw;
+                right: -100vw;
+            }
+
+            .moodboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <div class="logo-icon">I</div>
+            Illusera
+        </div>
+
+        <div class="nav-links">
+            <a href="homepage.html" class="nav-link active">Studio</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="pricing.html" class="nav-link">Pricing</a>
+
+            <div class="profile-menu">
+                <div class="profile-trigger">
+                    <div class="profile-avatar">JD</div>
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Creative Studio</h1>
+            <p class="hero-subtitle">
+                Search professional stock images with AI-powered natural language queries and create stunning moodboards
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">Millions</span>
+                    <span class="stat-label">Images</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">AI</span>
+                    <span class="stat-label">Powered</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Pexels</span>
+                    <span class="stat-label">Connected</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2 class="chat-title">🎨 Image Search Assistant</h2>
+                <p class="chat-subtitle">Search professional images with natural language</p>
+                <div class="chat-actions">
+                    <button class="action-button" onclick="clearChat()">Clear Chat</button>
+                    <button class="action-button" onclick="exportMoodboard()">Export Moodboard</button>
+                </div>
+            </div>
+
+            <div class="messages" id="messages">
+                <div class="welcome">
+                    <span class="welcome-icon">✨</span>
+                    <strong>Welcome to your Image Search Studio!</strong><br>
+                    Tell me what you're looking for and I'll find the perfect images for you.<br><br>
+                    <em>Try: "sunset over mountains", "modern office space", "happy people working"</em>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea class="input-box" id="messageInput" placeholder="Search for images..."
+                        rows="1"></textarea>
+                </div>
+                <button class="send-button" id="sendButton">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moodboard Toggle Button -->
+    <button class="moodboard-toggle" onclick="toggleMoodboard()" id="moodboardToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+        </svg>
+    </button>
+
+    <!-- Moodboard Sidebar -->
+    <div class="moodboard-sidebar" id="moodboardSidebar">
+        <div class="moodboard-header">
+            <h3 class="moodboard-title">My Moodboard (<span id="moodboardCount">0</span>)</h3>
+            <button class="close-moodboard" onclick="toggleMoodboard()">&times;</button>
+        </div>
+        <div class="moodboard-content">
+            <div class="moodboard-grid" id="moodboardGrid">
+                <div class="moodboard-empty">
+                    Add images to your moodboard by clicking the "+" button on any image
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('messages');
+        const chatInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const moodboardSidebar = document.getElementById('moodboardSidebar');
+        const moodboardGrid = document.getElementById('moodboardGrid');
+        const moodboardCount = document.getElementById('moodboardCount');
+
+        // Pexels API configuration
+        const PEXELS_API_KEY = '2tiLN9U4FXZyuvBaJKPYCUxruJ70cVAxIHIijsJUdUIHHKcyP5BeCcx3';
+        const PEXELS_API_URL = 'https://api.pexels.com/v1/search';
+
+        // Moodboard storage
+        let moodboardImages = [];
+
+        // Auto-resize textarea
+        chatInput.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send message on Enter
+        chatInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage('user', message);
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+
+            // Show loading
+            const loadingElement = addMessage('bot', `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Searching for images...
+                </div>
+            `);
+
+            try {
+                await searchImages(message, loadingElement);
+            } catch (error) {
+                updateMessage(loadingElement, `Error: ${error.message}`);
+            }
+        }
+
+        function addMessage(sender, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `
+                <div class="avatar">${sender === 'user' ? 'You' : 'AI'}</div>
+                <div class="message-content">${content}</div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return messageDiv;
+        }
+
+        function updateMessage(messageElement, newContent) {
+            const contentDiv = messageElement.querySelector('.message-content');
+            contentDiv.innerHTML = newContent;
+        }
+
+        async function searchImages(query, loadingElement) {
+            if (!PEXELS_API_KEY || PEXELS_API_KEY === 'YOUR_PEXELS_API_KEY') {
+                setTimeout(() => {
+                    const demoImages = generateDemoImages(query);
+                    displayImages(loadingElement, query, demoImages);
+                }, 1500);
+                return;
+            }
+
+            const response = await fetch(`${PEXELS_API_URL}?query=${encodeURIComponent(query)}&per_page=12`, {
+                headers: {
+                    'Authorization': PEXELS_API_KEY
+                }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch images from Pexels');
+
+            const data = await response.json();
+            displayImages(loadingElement, query, data.photos);
+        }
+
+        function generateDemoImages(query) {
+            const imageCount = 8;
+            const images = [];
+            const seed = query.replace(/\s+/g, '').toLowerCase();
+
+            for (let i = 0; i < imageCount; i++) {
+                const width = 400 + (i * 50);
+                const height = 300 + (i * 30);
+                images.push({
+                    id: `${seed}_${i + 1}`,
+                    photographer: `Photographer ${i + 1}`,
+                    src: {
+                        medium: `https://picsum.photos/seed/${seed}${i}/${width}/${height}`,
+                        large: `https://picsum.photos/seed/${seed}${i}/${width * 2}/${height * 2}`
+                    },
+                    alt: `${query} - Image ${i + 1}`
+                });
+            }
+            return images;
+        }
+
+        function displayImages(loadingElement, query, images) {
+            if (!images || images.length === 0) {
+                updateMessage(loadingElement, `No images found for "${query}". Try a different search term!`);
+                return;
+            }
+
+            const imagesGrid = images.map(image => `
+                <div class="image-item" onclick="openModal('${image.src.large}', '${image.alt}')">
+                    <img src="${image.src.medium}" alt="${image.alt}" loading="lazy">
+                    <div class="image-overlay">
+                        <span>Photo by ${image.photographer}</span>
+                        <button class="add-to-moodboard" onclick="event.stopPropagation(); addToMoodboard('${image.id}', '${image.src.medium}', '${image.alt}', '${image.photographer}')">
+                            + Add
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            const responseContent = `
+                <div class="search-results">
+                    <div class="found-images">
+                        <div class="results-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="21 19l-5.154-5.154a8 8 0 10-1.414 1.414L19 21l2-2zM5 10a5 5 0 1110 0 5 5 0 01-10 0z"/>
+                            </svg>
+                            Found ${images.length} images for "${query}"
+                        </div>
+                        <div class="images-grid">${imagesGrid}</div>
+                    </div>
+                </div>
+            `;
+            updateMessage(loadingElement, responseContent);
+        }
+
+        // Moodboard Functions
+        function addToMoodboard(id, src, alt, photographer) {
+            // Check if already in moodboard
+            if (moodboardImages.find(img => img.id === id)) {
+                showNotification('Image already in moodboard!', 'info');
+                return;
+            }
+
+            const imageData = { id, src, alt, photographer };
+            moodboardImages.push(imageData);
+            updateMoodboardDisplay();
+            showNotification('Added to moodboard!', 'success');
+        }
+
+        function removeFromMoodboard(id) {
+            moodboardImages = moodboardImages.filter(img => img.id !== id);
+            updateMoodboardDisplay();
+            showNotification('Removed from moodboard', 'info');
+        }
+
+        function updateMoodboardDisplay() {
+            moodboardCount.textContent = moodboardImages.length;
+
+            if (moodboardImages.length === 0) {
+                moodboardGrid.innerHTML = `
+                    <div class="moodboard-empty">
+                        Add images to your moodboard by clicking the "+" button on any image
+                    </div>
+                `;
+            } else {
+                moodboardGrid.innerHTML = moodboardImages.map(image => `
+                    <div class="moodboard-item">
+                        <img src="${image.src}" alt="${image.alt}" onclick="openModal('${image.src}', '${image.alt}')">
+                        <button class="remove-from-moodboard" onclick="removeFromMoodboard('${image.id}')">&times;</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleMoodboard() {
+            moodboardSidebar.classList.toggle('open');
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the chat?')) {
+                chatMessages.innerHTML = `
+                    <div class="welcome">
+                        <span class="welcome-icon">✨</span>
+                        <strong>Welcome to your Image Search Studio!</strong><br>
+                        Tell me what you're looking for and I'll find the perfect images for you.<br><br>
+                        <em>Try: "sunset over mountains", "modern office space", "happy people working"</em>
+                    </div>
+                `;
+            }
+        }
+
+        function exportMoodboard() {
+            if (moodboardImages.length === 0) {
+                showNotification('Moodboard is empty!', 'warning');
+                return;
+            }
+
+            // Create a simple text export
+            const exportData = {
+                title: 'My Moodboard',
+                created: new Date().toISOString(),
+                images: moodboardImages
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `moodboard_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+
+            showNotification('Moodboard exported!', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--success)' : type === 'warning' ? 'var(--accent)' : 'var(--primary)'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 1003;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        function openModal(imageSrc, imageAlt) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modalImage.alt = imageAlt;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Event listeners
+        document.getElementById('imageModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                if (moodboardSidebar.classList.contains('open')) {
+                    toggleMoodboard();
+                }
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Close moodboard when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!moodboardSidebar.contains(e.target) &&
+                !e.target.closest('.moodboard-toggle') &&
+                moodboardSidebar.classList.contains('open') &&
+                !e.target.closest('.add-to-moodboard')) {
+                // Don't close if clicking add to moodboard button
+            }
+        });
+
+        // Initialize
+        updateMoodboardDisplay();
+
+        // Add some sample functionality for demo
+        function showDemoImages() {
+            const demoQuery = "creative workspace";
+            const loadingElement = addMessage('bot', `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Loading demo images...
+                </div>
+            `);
+
+            setTimeout(() => {
+                const demoImages = generateDemoImages(demoQuery);
+                displayImages(loadingElement, demoQuery, demoImages);
+            }, 1500);
+        }
+
+        // Optional: Auto-show demo on page load after a delay
+        setTimeout(() => {
+            if (chatMessages.children.length === 1) { // Only welcome message
+                // Uncomment the line below if you want to auto-show demo images
+                // showDemoImages();
+            }
+        }, 3000);
+
+    </script>
+</body>
+
+</html>

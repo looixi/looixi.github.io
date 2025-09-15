@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Pro - Premium Business Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0b1f 50%, #2d1b35 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .features-section {
+            background: rgba(45, 27, 53, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(138, 67, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #8a43ff, transparent);
+        }
+
+        .payment-section {
+            background: rgba(26, 11, 31, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(138, 67, 255, 0.3);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(138, 67, 255, 0.1);
+        }
+
+        .pro-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #8a43ff, #b084ff);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pro-badge::before {
+            content: '✦';
+            color: #ffffff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff, #b084ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #b084ff;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .period {
+            font-size: 1.2rem;
+            color: #8a43ff;
+        }
+
+        .trial-note {
+            background: rgba(138, 67, 255, 0.1);
+            border: 1px solid rgba(138, 67, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 32px;
+            text-align: center;
+            color: #b084ff;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: #e0e0e0;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            background: linear-gradient(45deg, #8a43ff, #b084ff);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #b084ff;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 16px;
+            background: rgba(45, 27, 53, 0.5);
+            border: 1px solid rgba(138, 67, 255, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8a43ff;
+            box-shadow: 0 0 0 3px rgba(138, 67, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8a43ff;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .security-note::before {
+            content: '🔒';
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #8a43ff, #b084ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscribe-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .subscribe-btn:hover::before {
+            left: 100%;
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(138, 67, 255, 0.3);
+        }
+
+        .money-back {
+            text-align: center;
+            margin-top: 16px;
+            color: #8a43ff;
+            font-size: 14px;
+        }
+
+        .trust-indicators {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(138, 67, 255, 0.2);
+        }
+
+        .trust-item {
+            text-align: center;
+            color: #8a43ff;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                max-width: 500px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .features-section,
+            .payment-section {
+                padding: 24px;
+            }
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #8a43ff, #b084ff);
+            opacity: 0.1;
+            border-radius: inherit;
+            filter: blur(20px);
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="features-section">
+            <div class="pro-badge">Pro Trial</div>
+            <h1>Unlock Premium Features</h1>
+            <p class="subtitle">Experience the full potential of our platform with advanced business tools and priority
+                support.</p>
+
+            <div class="price-display">
+                <span class="price">$29</span>
+                <span class="period">/month</span>
+            </div>
+
+            <div class="trial-note">
+                🎯 <strong>14-day free trial</strong> • Cancel anytime • No hidden fees
+            </div>
+
+            <ul class="features-list">
+                <li>Advanced Analytics Dashboard</li>
+                <li>Priority Customer Support</li>
+                <li>Unlimited Project Access</li>
+                <li>Custom Integrations</li>
+                <li>Advanced Security Features</li>
+                <li>Team Collaboration Tools</li>
+                <li>API Access & Webhooks</li>
+                <li>White-label Solutions</li>
+                <li>Dedicated Account Manager</li>
+                <li>Business Intelligence Reports</li>
+            </ul>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    🔒<br>SSL Encrypted
+                </div>
+                <div class="trust-item">
+                    🏆<br>Industry Leader
+                </div>
+                <div class="trust-item">
+                    ⚡<br>99.9% Uptime
+                </div>
+                <div class="trust-item">
+                    🛡️<br>SOC2 Compliant
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-section glow-effect">
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" name="company" placeholder="Your Company Inc." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="billing-country">Billing Country</label>
+                    <select id="billing-country" name="billing-country" required>
+                        <option value="">Select Country</option>
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="SG">Singapore</option>
+                        <option value="JP">Japan</option>
+                    </select>
+                </div>
+
+                <div class="security-note">
+                    Your payment information is encrypted and secure
+                </div>
+
+                <button type="submit" class="subscribe-btn">
+                    Start Pro Trial
+                </button>
+
+                <div class="money-back">
+                    💎 30-day money-back guarantee
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Back button functionality
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'pricing.html';
+            }
+        }
+
+        // Form validation and interactions
+        document.getElementById('payment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.querySelector('.subscribe-btn');
+            const originalText = btn.textContent;
+
+            btn.textContent = 'Processing...';
+            btn.style.background = 'linear-gradient(45deg, #666, #888)';
+
+            setTimeout(() => {
+                btn.textContent = '✓ Trial Activated!';
+                btn.style.background = 'linear-gradient(45deg, #4CAF50, #66BB6A)';
+
+                setTimeout(() => {
+                    alert('Welcome to Pro! Your 14-day trial has been activated. Check your email for confirmation and next steps.');
+                }, 1000);
+            }, 2000);
+        });
+
+        // Card number formatting
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+            e.target.value = value;
+        });
+
+        // Expiry date formatting
+        document.getElementById('expiry').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // CVV validation
+        document.getElementById('cvv').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+        });
+    </script>
+</body>
+
+</html>
